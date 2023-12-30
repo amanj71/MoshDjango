@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2> Amj got in problem</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Tiltle </th>
+                <th> Year of Realese </th>
+                <th> Genre </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movie in movies %}
+            <tr>
+                <td> {{movie.title}} </td>
+                <td>  {{movie.realese_year}} </td>
+                <td> {{movie.genre}} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      
+    </table>
+{% endblock content %} 

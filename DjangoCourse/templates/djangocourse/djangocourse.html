@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>
+   Data from database
+</h1>
+<ul>
+   {% for customer in data_render %}
+   <p>
+      {{ customer.membership }}
+   </p>
+   {% endfor %}
+</ul>
+
+{% endblock  %}
