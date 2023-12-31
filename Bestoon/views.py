@@ -13,3 +13,6 @@ def submit_expense(request):
     
     Expense.objects.create(user=this_user, amount=request.POST['amount'], text=request.POST['text'], date=date)
     return JsonResponse({'status': 'OK'}, encoder=JSONEncoder)
+
+def register(request):
+    pass
