@@ -29,4 +29,5 @@ urlpatterns = [
     path("store/", include("Store.urls")),
     path("testapp/", include("TestApp.urls")),
     path("bestoon/", include("Bestoon.urls")),
+    path("ecommerce/", include("Ecommerce.urls")),
 ]

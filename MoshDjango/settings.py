@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Tags',
     'TestApp',
     'Bestoon',
+    'Ecommerce',
 ]
 
 MIDDLEWARE = [
