@@ -9,10 +9,15 @@
         {{ content }}
     </p>
 </div>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col"></div>
             <div class="col-sm-6 col-12">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
                 <form method="POST">
                     {% csrf_token %}
                     <input type="text" class="form-control" placeholder="Name" name="fullname">
