@@ -12,7 +12,7 @@ class ContactPageForm(forms.Form):
         "class": "form-control", "placeholder": "Your Content"
     }))
 
-    def clean_email(self):
+    def clean_harchi(self):
         email = self.cleaned_data.get("email")
         if not "@yahoo.com" in email:
             raise forms.ValidationError("Enter Yahoo mail Pleas")
@@ -21,3 +21,18 @@ class ContactPageForm(forms.Form):
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
+
+class RegisterForm(forms.Form):
+    username = forms.CharField(max_length=80)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+
+    def clean(self):
+        data = self.cleaned_data
+        password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+        if password != password2:
+            raise forms.ValidationError("Passwords should match together")
+        return data
+
