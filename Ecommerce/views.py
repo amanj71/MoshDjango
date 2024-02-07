@@ -50,10 +50,8 @@ def login_page(request):
             login(request, user)
             #context['form'] = LoginForm()
             return redirect("login_page")
-            ...
         else:
             return HttpResponse("Error In Login Procesure")
-            ...
     return render(request, "ecommerce/login_page.html", context)
 
 def register_page(request):
@@ -61,7 +59,7 @@ def register_page(request):
     context = {
         "form": form, 
     }
-    print("befor Click Submit")
+    print("before Click Submit")
     if form.is_valid():
         print(form.cleaned_data)
         print("is validated passed")

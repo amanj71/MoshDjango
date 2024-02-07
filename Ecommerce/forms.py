@@ -12,7 +12,7 @@ class ContactPageForm(forms.Form):
         "class": "form-control", "placeholder": "Your Content"
     }))
 
-    def clean_harchi(self):
+    def clean_email(self):
         email = self.cleaned_data.get("email")
         if not "@yahoo.com" in email:
             raise forms.ValidationError("Enter Yahoo mail Pleas")
