@@ -1,9 +1,21 @@
+from typing import Any
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views.generic.list import ListView
 from django.contrib.auth import login, authenticate
 from .forms import ContactPageForm, LoginForm, RegisterForm
+from .models import Product
 
-# Create your views here.
+class ProductListView(ListView):
+    queryset = Product.objects.all()
+    template_name = "ecommerce/list.html"
+
+    def get_context_data(self,*args, **kwargs):
+        context = super(Product, self).get_context_data(*args, **kwargs)
+        print(context)
+        return context
+
+# Create your functional views here.
 def home_page(request):
     context = {
         "title": "This is Home Page",
