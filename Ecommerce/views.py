@@ -1,21 +1,42 @@
 from typing import Any
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.views.generic.list import ListView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, DetailView
 from django.contrib.auth import login, authenticate
 from .forms import ContactPageForm, LoginForm, RegisterForm
 from .models import Product
 
 class ProductListView(ListView):
     queryset = Product.objects.all()
-    template_name = "ecommerce/list.html"
+    model = Product
+    template_name = "ecommerce/product_list.html"
 
-    def get_context_data(self,*args, **kwargs):
-        context = super(Product, self).get_context_data(*args, **kwargs)
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductListView, self).get_context_data(*args, **kwargs)
+        print(context)
+        return context
+
+def product_detail(request, id):
+    product = get_object_or_404(Product, id=id)
+    context = {
+        "product_detail": product
+    }
+    print(context)
+    return render(request, "ecommerce/product_detail.html", context)
+    pass
+
+class ProductDetail(DetailView):
+    model = Product
+    template_name = "ecommerce/product_detail.html"
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductDetail, self).get_context_data(*args, **kwargs)
+        print("There is Prodect detail object")
         print(context)
         return context
 
 # Create your functional views here.
+
 def home_page(request):
     context = {
         "title": "This is Home Page",
@@ -23,7 +44,7 @@ def home_page(request):
         "logged_user": "User name"
     }
     if request.user.is_authenticated:
-        context['logged_user'] = "I'll get UserName one day"
+        context['logged_user'] = "Great, You are logged in. Enjoy more content :)"
     return render(request, "ecommerce/home_page.html", context)
 
 def about_page(request):

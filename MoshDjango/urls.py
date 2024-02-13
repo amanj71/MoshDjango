@@ -16,13 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include 
+from django.shortcuts import render
 
-# admin panel labels
+## admin panel labels
 admin.site.site_header = "Amanj Learning Django"
 admin.site.index_title = "Admin Panel"
 
-# add main urls
+## a home page function
+def homepage(request):
+    context = {'home': "Welcome To Learning Django Home Page Dear Amanj ;)"}
+    return render(request, "base.html", context)
+
+
+## add main urls
 urlpatterns = [
+    path('', homepage),
     path('admin/', admin.site.urls),
     path("appadress/", include("App_Name.urls")),
     path("djangocourse/", include("DjangoCourse.urls")),
