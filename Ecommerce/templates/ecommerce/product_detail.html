@@ -14,7 +14,10 @@ this one is for result of ClassView
 <h6> Name </h6>
 {{ object.title }}
 <h6> price </h6>
-{{ object.price }} $
+{{ object.price }} $ <br>
+
+<img src="{{ object.image.url }}" class="img-fluid" />
+
 
     
 {% endblock content %}
