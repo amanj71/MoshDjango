@@ -99,3 +99,11 @@ def register_page(request):
     else:
         print("is validate NOT passed")
     return render(request, "ecommerce/register_page.html", context)
+
+
+
+def jquery(request):
+    context = {
+
+    }
+    return render(request, 'ecommerce/jquery_learning.html', context)
