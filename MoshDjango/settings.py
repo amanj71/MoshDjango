@@ -82,13 +82,9 @@ WSGI_APPLICATION = 'MoshDjango.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'mosh',
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
-        'USER': 'root',
-        'PASSWORD': 'Amj00amj00',
-            }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
