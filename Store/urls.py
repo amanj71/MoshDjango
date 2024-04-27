@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.collection_render, name="store_collection_render"),
+    path('', views.product_render, name="store_product_render"),
 ]

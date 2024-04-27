@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
-from . import models
+from .models import Collection, Product
 
 # Create your views here.
 def promotion_render(request):
@@ -10,7 +10,14 @@ def collection_render(request):
     pass
 
 def product_render(request):
-    pass
+    queryset = Product.objects.filter(price__lt=5, inventory__lt=10)
+    products_count = queryset.count()
+    context = {
+        'products': queryset,
+        'products_count': products_count,
+    }
+    print(list(queryset))
+    return render(request, 'store/products_list.html', context)
 
 def customer_render(request):
     pass
