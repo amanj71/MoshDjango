@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'App_Name.apps.AppNameConfig',
     'DjangoCourse.apps.DjangocourseConfig',
     'Store',
@@ -133,3 +134,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "static_cdn", "media_root")
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Turn off decimal to string specification in rest_framework
+REST_FRAMEWORK = { 'COERCE_DECIMAL_TO_STRING' : False }
