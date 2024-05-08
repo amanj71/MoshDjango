@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Collection, Product, Order, OrderItem, Customer
-from .serializer import ProductSerializer
+from .serializer import ProductSerializer, CollectionSerializer
 
 # Create your views here.
 def promotion_render(request):
@@ -66,5 +66,40 @@ def product_list_api(request):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET', 'PUT'])
+def product_detail_api(request, id):
+    product = get_object_or_404(Product, id=id)
+    if request.method == 'PUT':
+        serializer = ProductSerializer(product, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    serializer = ProductSerializer(product)
+    return Response(serializer.data)
 
+@api_view(['GET', 'POST'])
+def collection_list_api(request):
+    if request.method == "GET":
+        queryset = Collection.objects.all()
+        serializer = CollectionSerializer(queryset, many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = CollectionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+@api_view(['GET', 'PUT', 'DELETE'])
+def collection_detail_api(request, id):
+    collection = get_object_or_404(Collection, id=id)
+    if request.method == "GET":
+        serializer = CollectionSerializer(collection)
+        return Response(serializer.data)
+    elif request.method == "PUT":
+        serializer = CollectionSerializer(collection, request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    elif request.method == 'DELETE':
+        collection.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

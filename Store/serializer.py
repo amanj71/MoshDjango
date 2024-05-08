@@ -6,12 +6,12 @@ from .models import Product, Collection, Customer
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = ('id', 'title')
+        fields = ('id', 'title', 'featured_product')
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'title', 'price', 'collection', 'price_with_tax')
+        fields = ('id', 'title', 'slug', 'price', 'inventory', 'collection', 'price_with_tax')
     price_with_tax = serializers.SerializerMethodField(method_name='calculate_tax')
 
     def calculate_tax(self, product: Product):
