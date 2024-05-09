@@ -6,11 +6,14 @@ from django.db.models.aggregates import Count, Sum, Avg, Max, Min
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from .models import Collection, Product, Order, OrderItem, Customer
 from .serializer import ProductSerializer, CollectionSerializer
 
-# Create your views here.
+## Create your views here.
 def promotion_render(request):
     pass
 
@@ -51,7 +54,8 @@ def cart_render(request):
 def cartitem_render(request):
     pass
 
-# Create Your API Views Here
+## Create Your API Views Here
+# functional Views
 @api_view(['GET', 'POST'])
 def product_list_api(request):
     if request.method == 'GET':
@@ -66,7 +70,7 @@ def product_list_api(request):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def product_detail_api(request, id):
     product = get_object_or_404(Product, id=id)
     if request.method == 'PUT':
@@ -74,6 +78,11 @@ def product_detail_api(request, id):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    elif request.method == 'DELETE':
+        if product.orderitem_set.count() > 0:
+            return Response({'error': 'Product cannot deleted because it is included in a orderitem'})
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     serializer = ProductSerializer(product)
     return Response(serializer.data)
 
@@ -103,3 +112,69 @@ def collection_detail_api(request, id):
     elif request.method == 'DELETE':
         collection.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+# Class Based Views
+'''class ProductListAPI(APIView):
+    def get(self, request):
+        queryset = Product.objects.all()
+        serializer = ProductSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)'''
+
+'''class ProductDetailAPI(APIView):
+    def get(self, request, id):
+        product = get_object_or_404(Product, id=id)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+    
+    def put(self, request, id):
+        product = get_object_or_404(Product, pk=id)
+        serializer = ProductSerializer(product, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, id):
+        product = get_object_or_404(Product, pk=id)
+        if product.orderitem_set.count() > 0:
+            return Response({'error': 'Product cannot deleted because it is included in a orderitem'})
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)'''
+
+class ProductListAPI(ListCreateAPIView):
+    queryset = Product.objects.select_related('collection').all()
+    serializer_class = ProductSerializer
+    
+    def get_serializer_context(self):
+        return {'request': self.request}
+
+class ProductDetailAPI(RetrieveUpdateDestroyAPIView):
+    queryset = queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def delete(self, request, pk):
+        product = get_object_or_404(Product, pk=id)
+        if product.orderitem_set.count() > 0:
+            return Response({'error': 'Product cannot deleted because it is included in a orderitem'})
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class CollectionListAPI(ListCreateAPIView):
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+    
+class CollectionDetailAPI(RetrieveUpdateDestroyAPIView):
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
+
+
